@@ -1,0 +1,15 @@
+ctransformers:
+  model_path:
+    small: "./models/mistral-7b-instruct-v0.1.Q3_K_M.gguf"
+    large: "./models/mistral-7b-instruct-v0.1.Q5_K_M.gguf"
+
+  model_type: "mistral"
+  model_config:
+    'max_new_tokens': 256
+    'temperature': 0.2
+    'context_length': 2048
+    'gpu_layers': 0 # 32 to put all mistral layers on GPU, might differ for other models
+    'threads': -1
+embeddings_path: "BAAI/bge-large-en-v1.5"
+
+
