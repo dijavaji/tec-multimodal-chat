@@ -1,0 +1,38 @@
+[
+  {
+    "additional_kwargs": {},
+    "content": "Hola como estas?",
+    "example": false,
+    "type": "human"
+  },
+  {
+    "additional_kwargs": {},
+    "content": "Hola, soy AURA, Analytical Unity for Robotic Assistance. Soy un asistente virtual diseñado para ayudarte con tus dudas e inquietudes.",
+    "example": false,
+    "type": "ai"
+  },
+  {
+    "additional_kwargs": {},
+    "content": "Cual es mi ultima pregunta?",
+    "example": false,
+    "type": "human"
+  },
+  {
+    "additional_kwargs": {},
+    "content": "Tu ultima pregunta es -cual fue mi ultima pregunta?-",
+    "example": false,
+    "type": "ai"
+  },
+  {
+    "additional_kwargs": {},
+    "content": "Eres un robot?",
+    "example": false,
+    "type": "human"
+  },
+  {
+    "additional_kwargs": {},
+    "content": "Soy una Inteligencia Artificial pero tu me puedes llamar AURA",
+    "example": false,
+    "type": "ai"
+  }
+]
