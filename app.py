@@ -3,6 +3,7 @@ from llm_chains import load_normal_chain
 from langchain.memory import StreamlitChatMessageHistory
 from streamlit_mic_recorder import mic_recorder, speech_to_text
 from utils import save_chat_history_json, load_chat_history_json, get_timestamp
+from image_handler import handle_image
 from audio_handler import transcribe_audio
 import yaml
 import os
@@ -69,7 +70,8 @@ def main():
         send_button= st.button("Enviar", key="send_button", on_click=clear_input_field)
     #print(voice_recording)
 
-    uploaded_audio = st.sidebar.file_uploader("Upload an audio file", type=["wav", "mp3", "ogg"])
+    uploaded_audio = st.sidebar.file_uploader("Cargar archivo de audio", type=["wav", "mp3", "ogg"])
+    uploaded_image = st.sidebar.file_uploader("Cargar archivo de imagen", type=["jpg", "jpeg", "png"])
 
     if uploaded_audio:
         transcribed_audio = transcribe_audio(uploaded_audio.getvalue())
@@ -82,6 +84,16 @@ def main():
         print(lm_response)
 
     if send_button or st.session_state.send_input:
+        if uploaded_image:
+            with st.spinner("Procesando imagen"):
+                user_message = "Describe la imagen con detalle por favor"
+                if st.session_state.user_question !="":
+                    user_message= st.session_state.user_question
+                    st.session_state.user_question = ""
+                llm_answer = handle_image(uploaded_image.getvalue(), st.session_state.user_question)
+                chat_history.add_user_message(user_message)
+                chat_history.add_ai_message(llm_answer)
+
         if st.session_state.user_question != "":
             llm_response = llm_chain.run(st.session_state.user_question)
             #llm_response = "Esta es una respuesta del modelo LLM"
