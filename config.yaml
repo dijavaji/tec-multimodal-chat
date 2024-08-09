@@ -14,5 +14,7 @@ embeddings_path: "BAAI/bge-large-en-v1.5"
 
 chat_history_path: "./chat_session"
 
+whisper_model: "openai/whisper-small"
+
 
 
