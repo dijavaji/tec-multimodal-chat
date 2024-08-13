@@ -5,7 +5,7 @@ from langchain.memory import ConversationBufferWindowMemory
 from langchain.prompts import PromptTemplate
 from langchain.llms import CTransformers
 from langchain_community.vectorstores import Chroma
-#import chromadb
+import chromadb
 import yaml
 
 with open("config.yaml", "r") as f:
@@ -16,7 +16,9 @@ def create_llm(model_path = config["ctransformers"]["model_path"]["small"], mode
     return llm
 
 def create_embeddings(embeddings_path = config["embeddings_path"]):
-    return HuggingFaceInstructEmbeddings(model_name=embeddings_path)
+    model_kwargs = {'device': 'cpu'}
+    encode_kwargs = {'normalize_embeddings': True}
+    return HuggingFaceInstructEmbeddings(model_name=embeddings_path, model_kwargs=model_kwargs, encode_kwargs=encode_kwargs)
 
 def create_llm_chain(llm, chat_prompt, memory):
     return LLMChain(llm=llm, prompt=chat_prompt, memory=memory)
@@ -29,6 +31,19 @@ def create_prompt_from_template(template):
 
 def load_normal_chain(chat_history):
     return chatChain(chat_history)
+
+def load_vectordb(embeddings):
+    persistent_client = chromadb.PersistentClient("chroma_db")
+    #collection = persistent_client.get_or_create_collection("collection_name")
+    #collection.add(ids=["1", "2", "3"], documents=["a", "b", "c"])
+
+    langchain_chroma = Chroma(
+        client=persistent_client,
+        collection_name="col_pdfs",
+        embedding_function=embeddings,
+    )
+    #print("There are", langchain_chroma._collection.count(), "in the collection")
+    return langchain_chroma
 
 class chatChain:
 

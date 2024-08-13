@@ -16,5 +16,10 @@ chat_history_path: "./chat_session"
 
 whisper_model: "openai/whisper-small"
 
+pdf_text_splitter:
+  chunk_size: 1024 # number of characters 1024 roughly equels 256 tokens
+  overlap: 50
+  separators: ["\n", "\n\n"]
+
 
 

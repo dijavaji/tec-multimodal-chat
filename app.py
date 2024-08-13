@@ -5,6 +5,7 @@ from streamlit_mic_recorder import mic_recorder, speech_to_text
 from utils import save_chat_history_json, load_chat_history_json, get_timestamp
 from image_handler import handle_image
 from audio_handler import transcribe_audio
+from pdf_handler import add_documents_to_db
 import yaml
 import os
 
@@ -72,6 +73,12 @@ def main():
 
     uploaded_audio = st.sidebar.file_uploader("Cargar archivo de audio", type=["wav", "mp3", "ogg"])
     uploaded_image = st.sidebar.file_uploader("Cargar archivo de imagen", type=["jpg", "jpeg", "png"])
+    uploaded_pdf = st.sidebar.file_uploader("Cargar archivo pdf", accept_multiple_files=True,key="pdf_upload", type=["pdf"])
+
+    if uploaded_pdf:
+        with st.spinner("Procesando pdf.."):
+            add_documents_to_db(uploaded_pdf)
+
 
     if uploaded_audio:
         transcribed_audio = transcribe_audio(uploaded_audio.getvalue())
