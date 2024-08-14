@@ -15,8 +15,10 @@ with open("config.yaml", "r") as f:
 
 def load_chain(chat_history):
     if st.session_state.pdf_chat:
-        return load_pdf_chat_chain(chat_history)
-    return load_normal_chain(chat_history)
+       print("ingreso por pdf")
+       return load_pdf_chat_chain(chat_history)
+    else:
+        return load_normal_chain(chat_history)
 
 def clear_input_field():
     st.session_state.user_question = st.session_state.user_input
