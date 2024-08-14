@@ -10,5 +10,5 @@ pypdfium2==4.27.0
 librosa==0.10.1
 pyyaml==6.0.1
 llama-cpp-python==0.2.20
-sentence-transformers==2.3.1
-
+sentence-transformers==2.2.2
+chromadb==0.4.23
