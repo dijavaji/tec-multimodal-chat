@@ -1,5 +1,6 @@
 from prompt_templates import memory_prompt_template
 from langchain.chains import StuffDocumentsChain, LLMChain, ConversationalRetrievalChain
+from langchain.chains.retrieval_qa.base import RetrievalQA
 from langchain_community.embeddings import HuggingFaceInstructEmbeddings
 from langchain.memory import ConversationBufferWindowMemory
 from langchain.prompts import PromptTemplate
@@ -44,6 +45,24 @@ def load_vectordb(embeddings):
     )
     #print("There are", langchain_chroma._collection.count(), "in the collection")
     return langchain_chroma
+
+def load_pdf_chat_chain(chat_history):
+    return pdfChatChain(chat_history)
+
+def load_retrieval_chain(llm, memory, vector_db):
+    return RetrievalQA.from_llm(llm=llm, memory=memory,retriever=vector_db.as_retriever(), verbose=True)
+
+
+class pdfChatChain:
+    def __init__(self, chat_history):
+        self.memory = create_chat_memory(chat_history)
+        self.vector_db = load_vectordb(create_embeddings())
+        llm = create_llm()
+        #llm = load_ollama_model()
+        self.llm_chain = load_retrieval_chain(llm, self.memory, self.vector_db)
+    def run(self, user_input):
+        print("Pdf chat chain is running...")
+        return self.llm_chain.run(query= user_input, history= self.memory.chat_memory.messages, stop=["Human:"])
 
 class chatChain:
 
