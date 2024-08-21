@@ -6,6 +6,7 @@ from langchain.memory import ConversationBufferWindowMemory
 from langchain.prompts import PromptTemplate
 from langchain.llms import CTransformers
 from langchain_community.vectorstores import Chroma
+#from langchain_community.llms import Ollama
 import chromadb
 import yaml
 
@@ -52,6 +53,9 @@ def load_pdf_chat_chain(chat_history):
 def load_retrieval_chain(llm, memory, vector_db):
     return RetrievalQA.from_llm(llm=llm, memory=memory,retriever=vector_db.as_retriever(), verbose=True)
 
+def load_ollama_model():
+    llm = Ollama(model="llama3:latest")
+    return llm
 
 class pdfChatChain:
     def __init__(self, chat_history):
@@ -74,4 +78,5 @@ class chatChain:
         self.llm_chain = create_llm_chain(llm, chat_prompt, self.memory)
 
     def run(self, user_input):
+        print("chat chain esta corriendo...")
         return self.llm_chain.run(human_input= user_input, history=self.memory.chat_memory.messages ,stop=["Human:"])
